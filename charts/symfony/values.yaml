@@ -1,0 +1,11 @@
+image:
+  repository: ''
+  tag: ''
+
+extraVolumes: []
+extraAppVolumeMounts: []
+extraAppContainers: []
+extraContainers: []
+
+defaultConfig: ''
+hosts: []

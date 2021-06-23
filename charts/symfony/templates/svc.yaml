@@ -1,0 +1,14 @@
+# -*- mode: k8s -*-
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "symfony.fullname" . }}
+  labels:
+    {{- include "symfony.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "symfony.selectorLabels" . | nindent 4 }}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

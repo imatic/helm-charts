@@ -1,0 +1,49 @@
+# -*- mode: k8s -*-
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ template "symfony.fullname" . }}
+  labels:
+    {{- include "symfony.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "symfony.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "symfony.labels" . | nindent 8 }}
+    spec:
+      volumes:
+        - name: code
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: {{ template "symfony.fullname" . }}
+        {{- if .Values.extraVolumes -}}
+          {{- toYaml .Values.extraVolumes | nindent 8 -}}
+        {{- end }}
+      initContainers:
+        - name: install
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          volumeMounts:
+            - name: code
+              mountPath: /code
+          command: [/bin/sh, -c, 'cp -r /var/www/html/. /code']
+      containers:
+        {{- if .Values.extraContainers -}}
+          {{- toYaml .Values.extraContainers | nindent 8 -}}
+        {{- end }}
+        {{- (include "symfony.app-container" (list . (dict "name" "app"))) | nindent 8 }}
+        {{- range .Values.extraAppContainers -}}
+          {{- (include "symfony.app-container" (list $ .)) | nindent 8 }}
+        {{- end }}
+        - name: httpd
+          image: imatic/httpd:2.4-fpm-localhost
+          volumeMounts:
+            - name: code
+              mountPath: /usr/local/apache2/htdocs
+              readOnly: true
+          ports:
+            - containerPort: 80

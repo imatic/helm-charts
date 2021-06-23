@@ -1,0 +1,14 @@
+# -*- mode: k8s -*-
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "postgres.fullname" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "postgres.selectorLabels" . | nindent 4 }}
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

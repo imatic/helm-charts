@@ -1,0 +1,11 @@
+image:
+  repository: 'postgres'
+  tag: '13'
+
+persistence:
+  size: '10Gi'
+  storageClass: 'local-path'
+
+user: postgres
+password: postgres
+db: postgres

@@ -1,0 +1,26 @@
+# -*- mode: k8s -*-
+{{ if .Values.hosts -}}
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: {{ template "symfony.fullname" . }}
+  labels:
+    {{- include "symfony.labels" . | nindent 4 }}
+spec:
+  tls:
+    - hosts:
+{{- range .Values.hosts }}
+        - {{ . | quote }}
+{{- end }}
+      secretName: {{ template "symfony.fullname" . }}-tls
+  rules:
+{{- range .Values.hosts }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ template "symfony.fullname" $ }}
+              servicePort: 80
+{{- end }}
+{{- end }}

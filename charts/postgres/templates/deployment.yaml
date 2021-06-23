@@ -1,0 +1,39 @@
+# -*- mode: k8s -*-
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ template "postgres.fullname" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "postgres.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "postgres.labels" . | nindent 8 }}
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ template "postgres.fullname" . }}
+      containers:
+        - name: postges
+          image: {{ .Values.image.repository}}:{{ .Values.image.tag }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          env:
+            - name: POSTGRES_USER
+              value: {{ tpl .Values.user . }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "postgres.fullname" . }}
+                  key: password
+            - name: POSTGRES_DB
+              value: {{ tpl .Values.db . }}

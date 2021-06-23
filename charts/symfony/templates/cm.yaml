@@ -1,0 +1,11 @@
+# -*- mode: k8s -*-
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "symfony.fullname" . }}
+  labels:
+    {{- include "symfony.labels" . | nindent 4 }}
+data:
+  .env: |
+{{- regexReplaceAll "APP_VERSION=.*\n" (include "symfony.env" .)  "" | nindent 4 -}}
+    APP_VERSION={{ .Values.image.tag }}
