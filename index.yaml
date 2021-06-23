@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  postgres:
+  - apiVersion: v2
+    created: "2021-06-23T09:18:29.171434059Z"
+    digest: 324730caf9d3a3950e35d9ef3293d6aa6230943673c259171a66580d8d65ef89
+    name: postgres
+    urls:
+    - https://github.com/imatic/helm-charts/releases/download/postgres-1.0.1/postgres-1.0.1.tgz
+    version: 1.0.1
+  symfony:
+  - apiVersion: v2
+    created: "2021-06-23T09:18:29.425300981Z"
+    digest: 656f9d5c80dd20adb8bc4de0d6864b0c423411d3281c044e01fc7eccaa8431da
+    name: symfony
+    urls:
+    - https://github.com/imatic/helm-charts/releases/download/symfony-1.0.1/symfony-1.0.1.tgz
+    version: 1.0.1
+generated: "2021-06-23T09:18:28.959692782Z"
