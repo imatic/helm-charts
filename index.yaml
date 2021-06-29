@@ -1,21 +1,12 @@
 apiVersion: v1
 entries:
-  postgres:
-  - apiVersion: v2
-    created: "2021-06-23T12:28:43.862829104Z"
-    description: Chart installing single instance of postgres
-    digest: 832669451c3b9718017e78472530ac09530a48fb8bc68a8a2afac2d3a1c25d6d
-    name: postgres
-    urls:
-    - https://github.com/imatic/helm-charts/releases/download/postgres-1.0.2/postgres-1.0.2.tgz
-    version: 1.0.2
   symfony:
   - apiVersion: v2
-    created: "2021-06-23T12:28:44.043349528Z"
+    created: "2021-06-29T09:38:31.012380653Z"
     description: Chart for Symfony apps
-    digest: ed655bdabe4151227bddc2ed993b8341e84c2a29d1ba1d8c894325a4638e8d7a
+    digest: c4d9babb987fb54e58c6956723eb5f9099fc49dfc66767bc53cb4379a5e836b3
     name: symfony
     urls:
-    - https://github.com/imatic/helm-charts/releases/download/symfony-1.0.2/symfony-1.0.2.tgz
-    version: 1.0.2
-generated: "2021-06-23T12:28:43.664766555Z"
+    - https://github.com/imatic/helm-charts/releases/download/symfony-1.0.3/symfony-1.0.3.tgz
+    version: 1.0.3
+generated: "2021-06-29T09:38:30.790284523Z"
