@@ -2,6 +2,8 @@ image:
   repository: 'changeMe'
   tag: 'changeMe'
 
+imagePullSecrets: []
+
 extraVolumes: []
 extraAppVolumeMounts: []
 extraAppContainers: []
