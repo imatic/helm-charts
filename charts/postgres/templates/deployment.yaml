@@ -30,6 +30,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
+              subPath: data
           {{- end }}
           env:
             - name: POSTGRES_USER

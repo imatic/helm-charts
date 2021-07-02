@@ -1,4 +1,4 @@
 apiVersion: v2
 name: postgres
-version: 1.0.3
+version: 1.0.4
 description: Chart installing single instance of postgres
