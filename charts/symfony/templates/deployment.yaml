@@ -36,7 +36,7 @@ spec:
           volumeMounts:
             - name: code
               mountPath: /code
-          command: [/bin/sh, -c, 'cp -r /var/www/html/. /code']
+          command: [/bin/sh, -c, '[ -n "$(ls -A /code)" ] || cp -r /var/www/html/. /code']
       containers:
         {{- if .Values.extraContainers -}}
           {{- toYaml .Values.extraContainers | nindent 8 -}}
