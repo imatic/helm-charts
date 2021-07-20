@@ -8,7 +8,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate
+    {{- toYaml .Values.updateStrategy | nindent 4 }}
   selector:
     matchLabels:
       {{- include "symfony.selectorLabels" . | nindent 6 }}
@@ -41,7 +41,7 @@ spec:
         {{- if .Values.extraContainers -}}
           {{- toYaml .Values.extraContainers | nindent 8 -}}
         {{- end }}
-        {{- (include "symfony.app-container" (list . (dict "name" "app"))) | nindent 8 }}
+        {{- (include "symfony.app-container" (list . (dict "name" "app" "startupProbe" (dict "tcpSocket" (dict "port" 9000)) "readinessProbe" (dict "tcpSocket" (dict "port" 9000)) "livenessProbe" (dict "tcpSocket" (dict "port" 9000))))) | nindent 8 }}
         {{- range .Values.extraAppContainers -}}
           {{- (include "symfony.app-container" (list $ .)) | nindent 8 }}
         {{- end }}
@@ -51,5 +51,15 @@ spec:
             - name: code
               mountPath: /usr/local/apache2/htdocs
               readOnly: true
+          startupProbe:
+            tcpSocket:
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+          livenessProbe:
+            tcpSocket:
+              port: 80
           ports:
             - containerPort: 80

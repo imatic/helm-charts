@@ -2,6 +2,9 @@ image:
   repository: 'changeMe'
   tag: 'changeMe'
 
+updateStrategy:
+  type: Recreate
+
 imagePullSecrets: []
 
 extraVolumes: []
