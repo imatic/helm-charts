@@ -19,6 +19,14 @@ entries:
     version: 1.0.3
   symfony:
   - apiVersion: v2
+    created: "2021-07-20T10:27:43.834415812Z"
+    description: Chart for Symfony apps
+    digest: ea6fbe97b3fceb17dc99e8e2f30a214bf96c4edfb8554756da6e63da066135a2
+    name: symfony
+    urls:
+    - https://github.com/imatic/helm-charts/releases/download/symfony-1.0.6/symfony-1.0.6.tgz
+    version: 1.0.6
+  - apiVersion: v2
     created: "2021-07-08T11:17:48.517995342Z"
     description: Chart for Symfony apps
     digest: dec1b5c73f7a223c0b8c19918e641862948a85d368b3072fe1fe9ee5dae190a3
