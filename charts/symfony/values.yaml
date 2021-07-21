@@ -14,3 +14,7 @@ extraContainers: []
 
 defaultConfig: ''
 hosts: []
+
+# in case RWO volume is used and more replicas are required (e.g. due to RollingUpdate),
+# all instances have to run on single node (https://github.com/kubernetes/kubernetes/issues/26567)
+useSingleNode: false
