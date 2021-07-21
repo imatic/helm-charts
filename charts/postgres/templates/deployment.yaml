@@ -42,3 +42,12 @@ spec:
                   key: password
             - name: POSTGRES_DB
               value: {{ tpl .Values.db . }}
+          startupProbe:
+            exec:
+              command: ['pg_isready', '-U', {{ .Values.user | quote }}, '-d', {{ .Values.db | quote }}, '-h', '127.0.0.1']
+          livenessProbe:
+            exec:
+              command: ['pg_isready', '-U', {{ .Values.user | quote }}, '-d', {{ .Values.db | quote }}, '-h', '127.0.0.1']
+          readinessProbe:
+            exec:
+              command: ['pg_isready', '-U', {{ .Values.user | quote }}, '-d', {{ .Values.db | quote }}, '-h', '127.0.0.1']

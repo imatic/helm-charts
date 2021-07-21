@@ -49,3 +49,14 @@ Selector labels
 app.kubernetes.io/name: {{ include "postgres.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "postgres.password" -}}
+  {{- $secret := lookup "v1" "Secret" .Release.Namespace (include "postgres.fullname" .) -}}
+  {{- $secretData := or $secret.data (dict) -}}
+  {{- $password := index $secretData "password" -}}
+  {{- if $password -}}
+    {{- $password | b64dec -}}
+  {{- else -}}
+    {{- tpl .Values.password . -}}
+  {{- end -}}
+{{- end }}
