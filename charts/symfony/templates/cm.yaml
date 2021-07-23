@@ -9,3 +9,12 @@ data:
   .env: |
 {{- regexReplaceAll "APP_VERSION=.*\n" (include "symfony.env" .)  "" | nindent 4 -}}
     APP_VERSION={{ .Values.image.tag }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "symfony.fullname" . }}-httpd
+  labels:
+    {{- include "symfony.labels" . | nindent 4 }}
+data:
+  custom_httpd.conf: {{ tpl .Values.httpd.config . | quote }}

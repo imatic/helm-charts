@@ -27,6 +27,9 @@ spec:
         - name: config
           configMap:
             name: {{ template "symfony.fullname" . }}
+        - name: httpd-config
+          configMap:
+            name: {{ template "symfony.fullname" . }}-httpd
         {{- if .Values.extraVolumes -}}
           {{- toYaml .Values.extraVolumes | nindent 8 -}}
         {{- end }}
@@ -51,6 +54,9 @@ spec:
             - name: code
               mountPath: /usr/local/apache2/htdocs
               readOnly: true
+            - name: httpd-config
+              mountPath: /usr/local/apache2/conf/custom_httpd.conf
+              subPath: custom_httpd.conf
           startupProbe:
             tcpSocket:
               port: 80
@@ -67,6 +73,25 @@ spec:
                 command: ['sleep', '5']
           ports:
             - containerPort: 80
+        {{- if .Values.metrics.enabled }}
+        - name: httpd-metrics
+          image: bitnami/apache-exporter:latest
+          command: ['/bin/apache_exporter', '--scrape_uri', 'http://localhost/server-status?auto']
+          ports:
+            - name: metrics
+              containerPort: 9117
+          startupProbe:
+            tcpSocket:
+              port: metrics
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+        {{- end }}
       {{- if .Values.useSingleNode }}
       affinity:
         podAffinity:

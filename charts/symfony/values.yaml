@@ -1,3 +1,6 @@
+metrics:
+  enabled: false
+
 image:
   repository: 'changeMe'
   tag: 'changeMe'
@@ -18,3 +21,14 @@ hosts: []
 # in case RWO volume is used and more replicas are required (e.g. due to RollingUpdate),
 # all instances have to run on single node (https://github.com/kubernetes/kubernetes/issues/26567)
 useSingleNode: false
+
+httpd:
+  config: |
+    {{- if .Values.metrics.enabled -}}
+    <Location "/server-status">
+      SetHandler server-status
+      RewriteEngine off
+      Require host 127.0.0.1
+    </Location>
+    ExtendedStatus On
+    {{- end -}}

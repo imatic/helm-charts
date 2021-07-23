@@ -1,0 +1,13 @@
+# -*- mode: k8s -*-
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "symfony.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "symfony.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - targetPort: metrics
+{{- end }}
