@@ -24,7 +24,7 @@ spec:
             claimName: {{ template "postgres.fullname" . }}
       {{- end }}
       containers:
-        - name: postges
+        - name: postgres
           image: {{ .Values.image.repository}}:{{ .Values.image.tag }}
           {{ if .Values.persistence.enabled -}}
           volumeMounts:
@@ -51,3 +51,31 @@ spec:
           readinessProbe:
             exec:
               command: ['pg_isready', '-U', {{ tpl .Values.user . | quote }}, '-d', {{ tpl .Values.db . | quote }}, '-h', '127.0.0.1']
+        {{- if .Values.metrics.enabled }}
+        - name: metrics
+          image: bitnami/postgres-exporter
+          env:
+            - name: DATA_SOURCE_URI
+              value: '127.0.0.1/{{ tpl .Values.db . }}?sslmode=disable'
+            - name: DATA_SOURCE_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "postgres.fullname" . }}
+                  key: password
+            - name: DATA_SOURCE_USER
+              value: {{ tpl .Values.user . | quote }}
+          ports:
+            - name: metrics
+              containerPort: 9187
+          startupProbe:
+            tcpSocket:
+              port: metrics
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+        {{- end }}

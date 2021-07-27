@@ -1,3 +1,6 @@
+metrics:
+  enabled: false
+
 image:
   repository: 'postgres'
   tag: '13'
