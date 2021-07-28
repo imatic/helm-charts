@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   postgres:
   - apiVersion: v2
+    created: "2021-07-28T08:16:34.755971897Z"
+    description: Chart installing single instance of postgres
+    digest: 98ba146c102707b76540ef0da579f0c7d57f42da3309c2afb8737b58c52d094a
+    name: postgres
+    urls:
+    - https://github.com/imatic/helm-charts/releases/download/postgres-1.0.8/postgres-1.0.8.tgz
+    version: 1.0.8
+  - apiVersion: v2
     created: "2021-07-27T07:58:14.166075023Z"
     description: Chart installing single instance of postgres
     digest: 2d32b45f2c764391be67257014afa4ec0e6cf89a2b020bf60b57e5367610b72a
