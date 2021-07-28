@@ -1,0 +1,12 @@
+# -*- mode: k8s -*-
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "postgres.fullname" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+data:
+  {{ if .Values.config.pg_hba -}}
+  pg_hba.conf: |
+    {{ tpl .Values.config.pg_hba . | nindent 4 }}
+  {{- end }}

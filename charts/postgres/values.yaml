@@ -13,3 +13,6 @@ persistence:
 user: postgres
 password: postgres
 db: postgres
+
+config:
+  pg_hba: ""

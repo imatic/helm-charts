@@ -17,21 +17,45 @@ spec:
       labels:
         {{- include "postgres.labels" . | nindent 8 }}
     spec:
-      {{ if .Values.persistence.enabled -}}
       volumes:
+        - name: config-map
+          configMap:
+            name: {{ template "postgres.fullname" . }}
+        {{ if .Values.config.pg_hba -}}
+        - name: config
+          emptyDir: {}
+        {{- end }}
+        {{ if .Values.persistence.enabled -}}
         - name: data
           persistentVolumeClaim:
             claimName: {{ template "postgres.fullname" . }}
-      {{- end }}
+        {{- end }}
+      initContainers:
+        {{ if .Values.config.pg_hba -}}
+        - name: config
+          image: {{ .Values.image.repository}}:{{ .Values.image.tag }}
+          volumeMounts:
+            - name: config-map
+              mountPath: /pg_hba.conf
+              subPath: pg_hba.conf
+            - name: config
+              mountPath: /config
+          command: [/bin/sh, -c, 'cp /pg_hba.conf /config/pg_hba.conf']
+        {{- end }}
       containers:
         - name: postgres
           image: {{ .Values.image.repository}}:{{ .Values.image.tag }}
-          {{ if .Values.persistence.enabled -}}
           volumeMounts:
+            {{ if .Values.persistence.enabled -}}
             - name: data
               mountPath: /var/lib/postgresql/data
               subPath: data
-          {{- end }}
+            {{- end }}
+            {{ if .Values.config.pg_hba -}}
+            - name: config
+              mountPath: /var/lib/postgresql/data/pg_hba.conf
+              subPath: pg_hba.conf
+            {{- end }}
           env:
             - name: POSTGRES_USER
               value: {{ tpl .Values.user . }}
