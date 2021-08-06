@@ -33,6 +33,11 @@ spec:
         {{- if .Values.extraVolumes -}}
           {{- toYaml .Values.extraVolumes | nindent 8 -}}
         {{- end }}
+        {{- if .Values.persistence.enabled }}
+        - name: symfony
+          persistentVolumeClaim:
+            claimName: {{ template "symfony.fullname" . }}
+        {{- end }}
       initContainers:
         - name: install
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

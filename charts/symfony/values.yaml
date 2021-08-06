@@ -10,6 +10,13 @@ updateStrategy:
 
 imagePullSecrets: []
 
+persistence:
+  enabled: false
+  size: '10Gi'
+  # storageClass: ''
+  # object<volume_path, container_path> (e.g.: 'data' => '/var/www/html/data')
+  paths: {}
+
 extraVolumes: []
 extraAppVolumeMounts: []
 extraAppContainers: []

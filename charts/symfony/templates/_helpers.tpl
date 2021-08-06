@@ -56,7 +56,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
     {{- $image := print $dot.Values.image.repository ":" $dot.Values.image.tag -}}
     {{- $configMount := (dict "name" "config" "mountPath" "/var/www/html/.env.local" "subPath" ".env") -}}
-    {{- $volumeMounts := concat (list $configMount) $dot.Values.extraAppVolumeMounts -}}
+    {{- $extraVolumeMounts := (list) -}}
+    {{- range $subPath, $path := $dot.Values.persistence.paths -}}
+        {{- $extraVolumeMounts = concat $extraVolumeMounts (list (dict "name" "symfony" "mountPath" $path "subPath" $subPath)) -}}
+    {{- end -}}
+    {{- $volumeMounts := concat (list $configMount) $extraVolumeMounts $dot.Values.extraAppVolumeMounts -}}
 
     {{- $defaults := dict "image" $image "volumeMounts" $volumeMounts -}}
     {{- merge (dict) $defaults $opts | list | toYaml -}}

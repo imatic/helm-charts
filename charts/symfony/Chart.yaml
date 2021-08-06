@@ -1,4 +1,4 @@
 apiVersion: v2
 name: symfony
-version: 1.0.10
+version: 1.0.11
 description: Chart for Symfony apps
