@@ -32,6 +32,7 @@ metadata:
     {{- include "symfony.labels" . | nindent 4 }}
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: 'websecure'
+    cert-manager.io/cluster-issuer: default
 spec:
   rules:
 {{- range .Values.hosts }}
@@ -46,4 +47,7 @@ spec:
                 port:
                   number: 80
 {{- end }}
+  tls:
+    - hosts: {{ toYaml .Values.hosts | nindent 8 }}
+      secretName: {{ template "symfony.fullname" . }}-cert
 {{- end }}
